@@ -1,0 +1,55 @@
+<%- include('../partials/head') %>
+  <div class="container">
+  <%- include('../partials/nav.ejs') %>
+   <nav style="margin-top:36px;margin-bottom:36px">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+            <h1 class="title">Users (<%= viewData.users.length %>)</h1>
+        </div>
+      </div>
+      
+      <div class="level-right">
+      <div class="level-item">
+        <select class="select">
+          <option>10</option>
+          <option>25</option>
+          <option>50</option>
+          <option>75</option>
+          <option>All</option>
+        </select>
+      </div>
+
+         
+     
+        <div class="level-item">
+            <a href="/users/new" class="button" >New User</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+    <table class="table is-fullwidth">
+        <thead>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Type</th>
+            <th>Added</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            <% viewData.users.forEach(function(user){%>
+                <tr>
+                    <td><%= user.firstName %> <%= user.lastName %></td>
+                    <td><%= user.email %></td>
+                    <td><%= user.userType.title %></td>
+                    <td><a href>Update</a>
+                    <td><a href>Remove</a>
+                </tr>
+            <%})%>
+        </tbody>
+    </table>
+   </div>
+  </body>
+</html>

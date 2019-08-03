@@ -1,0 +1,27 @@
+  <div class="columns is-multiline" > 
+      
+        <%products.forEach(function(product){%>
+        <div class="column is-3">
+        <a href>
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <img src="/images/lip.jpg" alt="Placeholder image">
+            </figure>
+          </div>
+          <div class="card-content">
+           
+
+            <div class="content">
+            <hr>
+             <p><%= product.title %> <%= product.size%><%= product.unitMeasure %>
+             <span style="color:red;">$<%= Number.parseFloat(product.sellingPrice).toFixed(2) %></span>
+             </p>
+             
+            </div>
+          </div>
+        </div>
+        </a>
+        </div>
+        <% }); %>      
+    </div>

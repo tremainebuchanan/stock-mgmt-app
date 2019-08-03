@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html style="background-color:#293462";>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <%- include('../partials/scripts') -%>
+  </head>
+  <body >
+  <div class="container" >
+  
+  <div style="width:800px;height:350px;margin:100px auto;">
+    <div class="columns">
+      <div class="column is-5" style="background-color:#216583">
+      <div style="width:200px;height:200px;margin:70px auto">
+        <h1 class="title is-3" style="text-align:center;color:#ffffff">Welcome</h1>
+        
+        </div>
+      </div>
+      <div class="column" style="background-color:#ffffff">
+      <div style="width:350px;height:200px;margin:80px auto;">
+        <form action="/users/authenticate" 
+              method="post" name="loginForm" id="loginForm">
+          
+          <div class="field">
+              <label class="label" style="color:#293462;font-weight:normal;font-size:17px">
+              Email</label>
+              <input class="input" type="text" name="email" autocomplete="off" onblur="validate(event)">
+          </div>
+          <div class="field">
+              <label class="label" style="color:#293462;font-weight:normal;font-size:17px">Password</label>
+              <input class="input" type="password" name="password" onblur="validatte(event)">
+          </div>
+          
+          <div class="field is-grouped is-grouped-right">
+            <p class="control">
+              <button class="button is-info" 
+                type="submit">
+                Login
+              </button>
+            </p>            
+        </div>
+          
+          </form>
+      </div>
+        
+      </div>
+    </div><!-- end of columns -->
+    
+    </div><!-- end of wrapper -->
+  
+   </div><!-- end of container -->
+  </body>
+</html>

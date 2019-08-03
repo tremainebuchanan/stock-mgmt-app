@@ -1,0 +1,42 @@
+<%- include('../partials/head.ejs') %>
+  <div class="container">
+  <%- include('../partials/nav.ejs')%>
+    <div style="width:400px;height:400px;margin:20px auto">
+    <% if(viewData.showMessage == true){%>
+      <div class="notification">
+          <%= viewData.message.text %>
+      </div>
+    <% } %>
+    <h1 class="title">New User</h1>
+    <hr>
+    <form action='/users' method="post">
+        
+        <div class="field">
+            <label class="label">Email</label>
+            <input class="input" name="email">
+        </div>
+
+        <div class="field">
+          <label class="label">First Name</label>
+          <input class="input" name="firstName" type="text">
+        </div>
+
+        <div class="field">
+          <label class="label">Last Name</label>
+          <input class="input" name="lastName" type="text">
+        </div>
+
+        <select name="userType">
+          <% viewData.usertypes.forEach(function(usertype){%>
+          <option value="<%= usertype._id %>">
+          <%= usertype.title %>
+          <%})%>
+        </select>
+
+        <button type="submit">Save</button>
+    </form>
+
+    
+   
+  </body>
+</html>

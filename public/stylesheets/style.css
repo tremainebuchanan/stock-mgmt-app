@@ -1,0 +1,27 @@
+/*https://colorhunt.co/palette/153796*/
+/*#293462 - Dark Blue*/
+body,html,.input, .button{
+  font-family: 'PT Sans', sans-serif;
+  font-size: 16px;
+}
+
+html{
+ 
+}
+
+.nav-item a{
+  color: #216583;
+}
+
+.title, .label, .table > th{
+  color:#293462;
+}
+
+.label{
+  font-weight: normal;
+  font-size:17px;
+}
+
+.is-sm{
+  width: 100px;
+}

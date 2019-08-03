@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <%- include('../scripts') -%>
+  </head>
+  <body>
+  <div class="container">
+  <%- include('../partials/nav.ejs')%>
+    <div style="width:600px;height:400px;margin:20px auto">
+
+    <h1 class="title">Add Inventory Item</h1>
+    <hr>  
+    <form method="post" action="/inventory">
+    <p class="subtitle">Select a product from the list</p>
+    
+    <div class="select">
+     <select class="select" name="product" id="productList" onchange="selected(this)">
+      <option value="">Select Product </option>
+      <% products.forEach(function(product){%>
+        <option value="<%= product._id %>">
+        <%= product.title %>
+        <%= product.size %><%= product.unitMeasure %>
+        </option>
+      <%})%>
+    </select>
+    </div>
+    
+     
+     <table class="table is-fullwidth" style="display:none" id="quantityList">
+      <thead>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th></th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Shea Butter</td>
+          <td><input class="input"></td>
+          <td><a href>Save</a></td>
+          <td><a href>Clear</a></td>
+        </tr>
+      </tbody>
+     </table>
+
+
+    <%# <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-link" type="submit">Submit</button>
+      </div>
+      <div class="control">
+        <a href="/inventory" class="button is-text">Cancel</a>
+      </div>
+    </div> %>
+    </form>
+    
+
+  
+
+    </div>
+  </div>
+   <%- include('scripts/lib') -%>
+  </body>
+</html>

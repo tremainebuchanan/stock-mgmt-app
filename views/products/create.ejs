@@ -1,0 +1,73 @@
+<%- include('../partials/head.ejs') %>
+  <div class="container">
+  <%- include('../partials/nav.ejs')%>
+    <div style="width:380px;height:400px;margin:20px auto">
+    <% if(viewData.outcome.success == true){%>
+    <div class="notification">
+      <button class="delete"></button>
+      <%= viewData.obj.message %>
+    </div>
+    <% } %>
+    <h1 class="title">New Product</h1>
+    
+    <form action="/products" method="post">
+      <div class="field">
+      <label class="label">Name</label>
+      <div class="control">
+        <input class="input" 
+               type="text" 
+               placeholder="e.g. Soap" 
+               name="title"
+               onblur="validate(event)">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Cost Price</label>
+      <div class="control">
+        <input class="input is-sm" 
+               type="text" 
+               placeholder="e.g. 100" 
+               name="costPrice"
+               onblur="validate(event)">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Size</label>
+      <div class="control">
+        <input class="input is-sm" type="text" placeholder="e.g. 20oz" 
+        name="size"
+        onblur="validate(event)">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Quantity</label>
+      <div class="control">
+        <input class="input is-sm" type="text" name="quantity" 
+        placeholder="e.g. 20"
+        onblur="validate(event)">
+      </div>
+    </div>
+
+    <%# <div class="field">
+      <label class="label">Description</label>
+      <div class="control">
+        <textarea class="textarea" placeholder="Brief product description" name="description"></textarea>
+      </div>
+    </div> %>
+
+    <div class="field is-grouped is-grouped-right">
+      <div class="control">
+        <button class="button" style="background-color:#216583;color:#ffffff;font-size:17px">Save</button>
+      </div>
+      <div class="control">
+        <a href="/products" class="button is-text">Cancel</a>
+      </div>
+    </div>
+    </div>
+  </div>
+   
+  </body>
+</html>

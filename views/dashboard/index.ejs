@@ -1,0 +1,53 @@
+<%- include('../partials/head.ejs')%>
+  <div class="container">
+  <%- include('../partials/nav.ejs') -%>
+     <nav style="margin-top:36px;margin-bottom:36px">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+            <h1 class="title">Dashboard</h1>
+        </div>
+      </div>
+      
+      <div class="level-right">     
+      
+    
+      </div>
+    </div>
+  </nav>
+    <div class="notification" style="background-color:#293462;color:#ffffff">
+          <div class="columns">
+          <div class="column is-3" style="text-align:center">
+            <p style="font-size:18px">Total Products</p>
+            <h1 class="title is-1"><%= viewData.products.length %></h1>
+          </div>
+
+          <div class="column is-3" style="text-align:center">
+            <p style="font-size:18px">Total Stock</p>
+            <h1 class="title is-1">100</h1>
+          </div>
+
+          <div class="column is-3" style="text-align:center">
+            <p style="font-size:18px">Pending Orders</p>
+            <h1 class="title is-1">40</h1>
+          </div>
+
+           <div class="column is-3" style="text-align:center">
+            <p style="font-size:18px">Revenues YTD($)</p>
+            <h1 class="title is-1">$200K</h1>
+          </div>
+         
+          </div>
+
+          
+          
+        </div>
+    <div class="colums">
+      <div class="column is-4">
+        
+      </div>
+    </div>
+    
+   </div>
+  </body>
+</html>

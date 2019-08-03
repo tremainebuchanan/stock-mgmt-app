@@ -1,0 +1,69 @@
+<%- include('../partials/head.ejs') %>
+  <div class="container" >
+  <%- include('../partials/nav.ejs')%>
+  <nav style="margin-top:36px;margin-bottom:36px">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+            <h1 class="title">Products (<%= viewData.products.length %>)</h1>
+        </div>
+      </div>
+      
+      <div class="level-right">
+      <%# <div class="level-item">
+        <select class="select">
+          <option>10</option>
+          <option>25</option>
+          <option>50</option>
+          <option>75</option>
+          <option>All</option>
+        </select>
+      </div> %>
+
+      <%# <div class="level-item">
+        <a href="/products?view=list" class="button">
+          <span class="icon is-small">
+        <i class="fas fa-list"></i>
+        </span>
+        </a>
+      </div> %>
+
+      
+      
+      <%# <div class="level-item">
+        <a href="/products?view=grid" class="button">
+        <span class="icon is-small">
+        <i class="fas fa-th"></i>
+        </span>
+      </a>
+      </div> %>
+        <div class="level-item">
+            <a href="/products/new" class="button" >New Product</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+    <% if(viewData.view === 'list'){%>
+      <%- include('../products/list') %>
+    <%}else{%>
+      <%- include('../products/grid.ejs') %>
+    <%}%>
+  
+
+  <div class="modal" id="delete">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h1 class="title is-4">Delete Product</h1> 
+        <hr> 
+              
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+   
+  </div>
+   
+  </body>
+</html>
