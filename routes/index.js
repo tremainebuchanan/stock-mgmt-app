@@ -1,20 +1,27 @@
-var express = require('express');
-var router = express.Router();
-const redirectLogin = require('../middlewares/middlewares').redirectLogin
-const extractUser = require('../middlewares/middlewares').extractUser
-const sessionService = require('../services/session')
-const productService = require('../services/product')
+const express = require('express');
 
-router.get('/', redirectLogin, extractUser, async (req, res, next) => {
-  const sessions = await sessionService.index()
-  const products = await productService.index()
-  const viewData = { 
-    title: 'Dashboard', 
-    user: res.locals.user, 
-    sessions: sessions, 
-    products: products
-  }
-  res.render('dashboard/index', {viewData: viewData});
+const router = express.Router();
+const { redirectLogin } = require('../middlewares/middlewares');
+const { extractUser } = require('../middlewares/middlewares');
+const sessionService = require('../services/session');
+const productService = require('../services/product');
+
+router.get('/', redirectLogin, extractUser, async (req, res) => {
+  const sessions = await sessionService.index();
+  const products = await productService.index();
+  const initialValue = 0;
+  const totalInventory = products.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.quantity,
+    initialValue,
+  );
+  const viewData = {
+    title: 'Dashboard',
+    user: res.locals.user,
+    sessions,
+    products,
+    totalInventory,
+  };
+  res.render('dashboard/index', { viewData });
 });
 
 module.exports = router;

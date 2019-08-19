@@ -15,39 +15,24 @@
       </div>
     </div>
   </nav>
-    <div class="notification" style="background-color:#293462;color:#ffffff">
-          <div class="columns">
-          <div class="column is-3" style="text-align:center">
-            <p style="font-size:18px">Total Products</p>
-            <h1 class="title is-1"><%= viewData.products.length %></h1>
-          </div>
+ 
+ <div class="columns">
+  <div class="column is-3">
+    <div class="card">
+      <div class="card-content">
+        <h1 class="title is-1"><%= viewData.products.length %></h1>
+        <h2 class="subtitle is-6" style="text-transform:uppercase">Products</h2>
+      </div>  <!-- end of card content -->  
+    </div> <!-- end of card -->
+  </div> <!-- end of column is-3 -->  
 
-          <div class="column is-3" style="text-align:center">
-            <p style="font-size:18px">Total Stock</p>
-            <h1 class="title is-1">100</h1>
-          </div>
+  <div class="column is-3">
+    <div class="card">
+      <div class="card-content">
+        <h1 class="title is-1"><%= viewData.totalInventory %></h1>
+        <h2 class="subtitle is-6" style="text-transform:uppercase">Total items in Stock</h2>
+      </div>  <!-- end of card content -->  
+    </div> <!-- end of card -->
+  </div> <!-- end of column is-3 -->
 
-          <div class="column is-3" style="text-align:center">
-            <p style="font-size:18px">Pending Orders</p>
-            <h1 class="title is-1">40</h1>
-          </div>
-
-           <div class="column is-3" style="text-align:center">
-            <p style="font-size:18px">Revenues YTD($)</p>
-            <h1 class="title is-1">$200K</h1>
-          </div>
-         
-          </div>
-
-          
-          
-        </div>
-    <div class="colums">
-      <div class="column is-4">
-        
-      </div>
-    </div>
-    
-   </div>
-  </body>
-</html>
+ </div> <!-- end of columns -->

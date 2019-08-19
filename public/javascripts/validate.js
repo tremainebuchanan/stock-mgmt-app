@@ -1,40 +1,63 @@
-window.addEventListener('load', () => {
+/* eslint-disable no-plusplus */
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 
-    console.log('page loaded')
-    const form = document.getElementById('loginForm')
-    form.addEventListener('submit', () => {
-        console.log('submitted')
-    })
-    //let invalidFieldList = []
-    // for(let i = 0; i < form.elements.length;i++){
-    //     if(form.elements[i].type === 'text' || 
-    //         form.elements[i].type === 'password'){
-    //         if(!isTextFieldValid(form.elements[i])){
-    //             invalidFieldList.push(form.elements[i].name)
-    //         }
-    //     }
-    // }
-    // console.log(invalidFieldList)
-})
-
-const isTextFieldValid = (field) => {
-    if(field.value === '') return false
-    else return true
-}
-
-const validate = (event) =>{
-    if(event.target.value.length === 0 || event.target.value === ""){
-        console.log('field invalid')
+const validateForm = (event) => {
+  event.preventDefault();
+  const form = document.getElementById('createProduct');
+  let count = 0;
+  for (let i = 0; i < form.length; i++) {
+    if (form.elements[i].type === 'text') {
+      if (form.elements[i].value === '') count += 1;
     }
-}
+  }
+  if (count === 0) {
+    form.submit();
+  }
+};
 
-const remove = (id) => {
-   toggleModal('delete')
-}
+const toggleField = (fieldId, isDisplayed, message, type) => {
+  const field = document.getElementById(fieldId);
+  if (!isDisplayed) {
+    field.style.display = 'none';
+  } else field.style.display = 'block';
+  field.innerHTML = message;
+  field.classList.add(type);
+};
 
-const toggleModal = (id) => {
-    const modal = document.getElementById(id)
-    modal.classList.add('is-active')
-}
+const validateField = (event) => {
+  const fieldId = `${event.target.name}-error`;
+  if (event.target.value === '') {
+    toggleField(fieldId, true, `${event.target.name} is missing.`, 'is-danger');
+  } else {
+    toggleField(fieldId, false, null, null);
+  }
+};
 
+const toggleModal = (title) => {
+  const modal = document.getElementById('delete');
+  const styles = modal.className.split(' ');
+  if (styles.indexOf('is-active') === -1) {
+    modal.classList.add('is-active');
+  } else {
+    modal.classList.remove('is-active');
+  }
+};
 
+const remove = (event, id, title) => {
+  toggleModal();
+  document.getElementById('productId').value = id;
+  event.preventDefault();
+};
+
+const deleteProduct = () => {
+  const productId = document.getElementById('productId').value;
+  const method = {
+    method: 'DELETE',
+  };
+  fetch(`/products/${productId}`, method)
+    .then((response) => response.json())
+    .then((data) => {
+      window.location.href = `/products?success=${data.success}`;
+    }).catch((err) => console.log(err));
+};
