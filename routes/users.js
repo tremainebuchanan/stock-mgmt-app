@@ -1,88 +1,70 @@
-var express = require('express');
-var router = express.Router();
-const generator = require('generate-password')
-const bcrypt = require('bcrypt')
-const User = require('../models/db').User
-const UserType = require('../models/db').UserType
-const sessionService = require('../services/session')
-const extractUser = require('../middlewares/middlewares').extractUser
-const redirectLogin = require('../middlewares/middlewares').redirectLogin
+const express = require('express');
 
-const saltRound = 10 
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API)
-let msg = {
-  to: 'tremainekbuchanan@gmail.com',
-  from: 'tremainekbuchanan@gmail.com',
-  subject: 'Welcome to Stock Mgmt App',
-  text: ''
-};
+const sgMail = require('@sendgrid/mail');
+const bcrypt = require('bcrypt');
 
-/* GET users listing. */
-router.get('/users', redirectLogin, extractUser, (req, res, next) => {
-  User.find({'isDeleted': false})
-      .select('-password')
-      .limit(50)
-      .populate('userType')
-      .exec((err, users)=>{
-        const viewData = {
-          title: 'Users', 
-          users: users,
-          user: res.locals.user
-        }
-        res.render('users/index', { viewData: viewData })
-  })  
+const router = express.Router();
+const { User } = require('../models/user');
+const { UserType } = require('../models/db');
+const sessionService = require('../services/session');
+const { extractUser } = require('../middlewares/middlewares');
+const { redirectLogin } = require('../middlewares/middlewares');
+const userService = require('../services/user.js');
+
+sgMail.setApiKey(process.env.SENDGRID_API);
+
+router.get('/users', redirectLogin, extractUser, (req, res) => {
+  User.find({ isDeleted: false })
+    .select('-password')
+    .limit(50)
+    .populate('userType')
+    .exec((err, users) => {
+      const viewData = {
+        title: 'Users',
+        users,
+        user: res.locals.user,
+      };
+      res.render('users/index', { viewData });
+    });
 });
 
-router.get('/users/new', redirectLogin, extractUser, (req, res, next)=>{
-  UserType.find().exec((err, usertypes)=>{
-    let showMessage = null
+router.get('/users/new', redirectLogin, extractUser, (req, res) => {
+  UserType.find().exec((err, usertypes) => {
+    let showMessage = null;
     let message = {
-      text: 'User was successfully created. An email was sent to the provided email.',
-      success: true
-    }
+      text: 'User was successfully created.',
+      success: true,
+    };
 
-    if(req.query.success){
-      showMessage = true
-      if(req.query.success !== 'true'){
-        message.success = false
-        message.text = 'An error occurred while attempting to create user.'
-      }     
+    if (req.query.success) {
+      showMessage = true;
+      if (req.query.success !== 'true') {
+        message.success = false;
+        message.text = 'An error occurred while attempting to create user.';
+      }
     }
     const viewData = {
-       title: 'Users | Create', 
-       usertypes: usertypes, 
-       showMessage: showMessage, message: message,
-       user: res.locals.user
-      }    
-    res.render('users/create', {viewData: viewData})
-  })  
-})
+      title: 'Users | Create',
+      usertypes,
+      showMessage,
+      message,
+      user: res.locals.user,
+    };
+
+    res.render('users/create', { viewData });
+  });
+});
 
 
-router.post('/users', (req, res, next)=>{
-  User.find({"email": req.body.email}).exec((err, user)=>{
-    if (user) res.redirect('/users/new?success=false&error=account_exists')
-  })
-  let user = new User(req.body)
-  let password = generator.generate({
-    length: 20
-  })
-  bcrypt.hash(password, saltRound, function(err, hash){
-    user.password = hash  
-    user.save(err => {
-      if (err) console.log(err)
-      // msg.text = password
-      // sgMail.send(msg, (error, result)=>{
-      //   if(error) console.log(error)
-      //   else{
-      //     console.log('mail sent')
-      //   }
-      // })
-      return res.redirect('/users/new?success=true')
-    }) 
-  })  
-})
+router.post('/users', (req, res) => {
+  // eslint-disable-next-line consistent-return
+  User.findOne({ email: req.body.email }).exec((err, user) => {
+    if (user) return res.redirect('/users/new?success=false&error=account_exists');
+    const result = userService.create(req.body);
+    if (!result) return res.redirect('/users/new?success=false&error=500');
+    return res.redirect('/users/new?success=true');
+  });
+});
 
 router.post('/usertypes', (req, res, next)=>{
   let userType = new UserType(req.body)

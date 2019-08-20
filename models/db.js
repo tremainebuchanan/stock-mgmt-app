@@ -22,17 +22,6 @@ const InvoiceSchema = new Schema({
     totalQty: { type: Number, default: 0 }
 }, { timestamps: { createdAt: 'createdOn', updatedAt: 'updatedOn' } })
 
-
-// const ProductSchema = new Schema({
-//     costPrice: { type: Schema.Types.Decimal128, default: 999999.99, required: true },
-//     description: { type: String },
-//     isDeleted: {type: Boolean, default: false},
-//     quantity: { type: Number, default: 0 },
-//     size: { type: Number, default: 0 },
-//     title: { type: String, required: true },
-//     unitMeasure: { type: String, default: 'oz' }    
-// }, { timestamps: { createdAt: 'createdOn', updatedAt: 'updatedOn' } })
-
 const SettingSchema = new Schema({
     title: {type: String, required: true},
     value: {type: String, required: true}
@@ -73,20 +62,11 @@ OrderSchema.set('toJSON', {
     }
 });
 
-// ProductSchema.set('toJSON', {
-//     transform: (document, result) => {
-//         result.costPrice = parseFloat(result.costPrice.toString())
-//         result.sellingPrice = parseFloat(result.sellingPrice.toString())
-//         result.discount = parseFloat(result.discount.toString())
-//         return result
-//     }
-// });
 
 exports.Customer = mongoose.model('Customer', CustomerSchema)
 exports.Inventory = mongoose.model('Inventory', InventorySchema)
 exports.Order = mongoose.model('Order', OrderSchema)
-//exports.Product = mongoose.model('Product', ProductSchema)
 exports.Setting = mongoose.model('Setting', SettingSchema)
-exports.User = mongoose.model('User', UserSchema)
+//exports.User = mongoose.model('User', UserSchema)
 exports.UserType = mongoose.model('UserType', UserTypeSchema)
 exports.Session = mongoose.model('Session', SessionSchema)

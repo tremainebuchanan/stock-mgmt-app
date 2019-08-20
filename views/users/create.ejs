@@ -1,14 +1,14 @@
 <%- include('../partials/head.ejs') %>
   <div class="container">
   <%- include('../partials/nav.ejs')%>
-    <div style="width:400px;height:400px;margin:20px auto">
+    <div style="width:400px;height:400px;margin:48px auto">
     <% if(viewData.showMessage == true){%>
       <div class="notification">
           <%= viewData.message.text %>
       </div>
     <% } %>
-    <h1 class="title">New User</h1>
-    <hr>
+    <h1 class="title">Add New User</h1>
+  
     <form action='/users' method="post">
         
         <div class="field">
@@ -26,14 +26,24 @@
           <input class="input" name="lastName" type="text">
         </div>
 
-        <select name="userType">
+        <input type="hidden" name="password" value="blank">
+
+        <div class="field">
+        <label class="label">
+          Select User Type
+        </label>
+        <div class="select">
+                  <select name="userType" class="select">
           <% viewData.usertypes.forEach(function(usertype){%>
           <option value="<%= usertype._id %>">
           <%= usertype.title %>
           <%})%>
         </select>
+        </div>   
+        </div>
+       
 
-        <button type="submit">Save</button>
+        <button class="button" type="submit">Save</button>
     </form>
 
     
