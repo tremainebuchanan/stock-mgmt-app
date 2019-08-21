@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const express = require('express');
 
 const sgMail = require('@sendgrid/mail');
@@ -13,19 +14,15 @@ const userService = require('../services/user.js');
 
 sgMail.setApiKey(process.env.SENDGRID_API);
 
-router.get('/users', redirectLogin, extractUser, (req, res) => {
-  User.find({ isDeleted: false })
-    .select('-password')
-    .limit(50)
-    .populate('userType')
-    .exec((err, users) => {
-      const viewData = {
-        title: 'Users',
-        users,
-        user: res.locals.user,
-      };
-      res.render('users/index', { viewData });
-    });
+router.get('/users', redirectLogin, extractUser, async (req, res) => {
+  const users = await userService.index();
+  const viewData = {
+    resource: 'user',
+    title: 'Users',
+    users,
+    user: res.locals.user,
+  };
+  res.render('users/index', { viewData });
 });
 
 router.get('/users/new', redirectLogin, extractUser, (req, res) => {
@@ -66,38 +63,45 @@ router.post('/users', (req, res) => {
   });
 });
 
-router.post('/usertypes', (req, res, next)=>{
-  let userType = new UserType(req.body)
-  userType.save((err)=>{
-    if(err) console.log(err)
+router.post('/usertypes', (req, res) => {
+  const userType = new UserType(req.body);
+  userType.save((err) => {
+    if (err) console.log(err);
     res.json(`UserType with id ${userType._id} successfully created`)
-  })
-})
+  });
+});
 
-router.post('/users/authenticate', (req, res, next)=>{
-  User.findOne({'email': req.body.email}).exec((err, user)=>{
-    if(!user) res.redirect('/login?success=false&user=false')
-    else{     
-      bcrypt.compare(req.body.password, user.password, (err, result)=>{
-        if(err){
-          console.log(err)
-          return res.redirect('/login?success=false')
+router.post('/users/authenticate', (req, res) => {
+  User.findOne({ email: req.body.email }).exec((err, user) => {
+    if (!user) res.redirect('/login?success=false&user=false');
+    else {
+      bcrypt.compare(req.body.password, user.password, (error, result) => {
+        if (error) {
+          return res.redirect('/login?success=false');
         }
-        req.session.user = {"userid": user._id, "email": user.email}
-        res.user = user
-        res.locals.user = user
-        sessionService.create(req.sessionID, user._id)
-        return res.redirect('/')
-      })
+        req.session.user = { userid: user._id, email: user.email };
+        res.user = user;
+        res.locals.user = user;
+        sessionService.create(req.sessionID, user._id);
+        return res.redirect('/');
+      });
     }
-  })
-})
+  });
+});
 
 router.get('/users/logout', async (req, res) => {
-  req.session.destroy()
-  res.clearCookie("_stock")
-  sessionService.remove(req.sessionID)
-  res.redirect('/login')
-})
+  req.session.destroy();
+  res.clearCookie('_stock');
+  sessionService.remove(req.sessionID);
+  res.redirect('/login');
+});
+
+router.delete('/users/:id', async (req, res) => {
+  const result = await userService.remove(req.params.id);
+  if (!result) return res.json({ success: false });
+  return res.json({
+    success: true,
+  });
+});
 
 module.exports = router;

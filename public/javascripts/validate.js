@@ -34,7 +34,7 @@ const validateField = (event) => {
   }
 };
 
-const toggleModal = (title) => {
+const toggleModal = () => {
   const modal = document.getElementById('delete');
   const styles = modal.className.split(' ');
   if (styles.indexOf('is-active') === -1) {
@@ -48,6 +48,30 @@ const remove = (event, id, title) => {
   toggleModal();
   document.getElementById('productId').value = id;
   event.preventDefault();
+};
+
+const removeUser = (event, id) => {
+  toggleModal();
+  document.getElementById('userId').value = id;
+  event.preventDefault();
+};
+
+const showModal = (event, id, title) => {
+  toggleModal();
+  document.getElementById(`${title}Id`).value = id;
+  event.preventDefault();
+};
+
+const removeResource = (title) => {
+  const resourceId = document.getElementById(`${title}Id`).value;
+  const method = {
+    method: 'DELETE',
+  };
+  fetch(`/${title}s/${resourceId}`, method)
+    .then((response) => response.json())
+    .then((data) => {
+      window.location.href = `/${title}s?success=${data.success}`;
+    }).catch((err) => console.log(err));
 };
 
 const deleteProduct = () => {

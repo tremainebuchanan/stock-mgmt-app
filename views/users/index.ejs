@@ -31,11 +31,31 @@
                     <td><%= user.firstName %> <%= user.lastName %></td>
                     <td><%= user.email %></td>
                     <td><%= user.userType.title %></td>
-                    <td><a href><i class="far fa-trash-alt"></i> Delete</a></td>
+                    <td><a href onclick="showModal(event,'<%= user._id%>', '<%= viewData.resource %>')"><i class="far fa-trash-alt"></i> Delete</a></td>
                 </tr>
             <%})%>
         </tbody>
     </table>
    </div>
-  </body>
-</html>
+
+ <div class="modal" id="delete">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="card">
+      <div class="card-content">
+          <h1 class="title is-4" id="modal-title">Delete <%= viewData.resource %></h1> 
+      
+        <p class="notification">
+          Are you sure you want to delete this <%= viewData.resource %>?
+        </p>
+
+        <input type="hidden" id="<%= viewData.resource %>Id">
+
+        <button class="button is-danger" onclick="removeResource('<%= viewData.resource %>')">Delete</button>
+        <button class="button is-white" onclick="toggleModal()">Cancel</button>   
+      </div>  
+              
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="toggleModal()"></button>
+  </div>

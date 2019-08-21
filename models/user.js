@@ -4,7 +4,6 @@
 /* eslint-disable consistent-return */
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const generator = require('generate-password');
 
 const { Schema } = mongoose;
 
@@ -26,7 +25,6 @@ const UserSchema = new Schema({
 /* this keyword will not work with arrow functions */
 UserSchema.pre('save', function(next) {
   const user = this;
-  user.password = generator.generate({ length: 20 });
   bcrypt.hash(user.password, 10, function(err, hash) {
     if (err) return next(err);
     user.password = hash;
