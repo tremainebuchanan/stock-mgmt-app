@@ -1,43 +1,46 @@
-require('dotenv').config()
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const session = require('express-session')
-const redisStore = require('connect-redis')(session)
-const redis = require('redis')
-const client = redis.createClient()
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-const productsRouter = require('./routes/products')
-const inventoryRoute = require('./routes/inventory')
-const settingsRoute = require('./routes/settings')
-const loginRoute = require('./routes/login')
-const sessionRoute = require('./routes/session')
-const mongoose = require('mongoose')
-const configs = require('./config/config')
-mongoose.Promise = global.Promise
+require('dotenv').config();
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
+const mongoose = require('mongoose');
 
-mongoose.connect(configs.mongo.uri, configs.mongo.options)
+const client = redis.createClient();
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const productsRouter = require('./routes/products');
+const inventoryRoute = require('./routes/inventory');
+const settingsRoute = require('./routes/settings');
+const loginRoute = require('./routes/login');
+const sessionRoute = require('./routes/session');
+const configs = require('./config/config');
+
+mongoose.Promise = global.Promise;
+
+mongoose.connect(configs.mongo.uri, configs.mongo.options);
 
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose connected')
-})
+  console.log('Mongoose connected');
+});
 
 mongoose.connection.on('error', (err) => {
-  console.log('Mongoose not connected: =>', err)
-})
+  console.log('Mongoose not connected: =>', err);
+});
 
-var app = express();
+const app = express();
 
-client.on('connect', ()=>{
-  console.log('Redis is connected')
-})
+client.on('connect', () => {
+  console.log('Redis is connected');
+});
 
-client.on('error', (err)=>{
-  console.log('Redis not connected' + err)
-})
+client.on('error', (err) => {
+  console.log('Redis not connected' + err);
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -50,30 +53,41 @@ app.use(cookieParser());
 app.use(session({
   name: '_stock',
   secret: configs.app.session.secret,
+  // eslint-disable-next-line radix
   duration: parseInt(configs.app.session.maxAge),
-  store: new redisStore({ host: 'localhost', port: 6379, client: client, ttl: 86400 }),
+  store: new RedisStore({
+    host: 'localhost',
+    port: 6379,
+    client,
+    ttl: 86400,
+  }),
   saveUninitialized: false,
   resave: false,
-  cookie: {secure: false, sameSite: true, maxAge: parseInt(configs.app.session.maxAge) }
+  cookie: {
+    secure: false,
+    sameSite: true,
+    // eslint-disable-next-line radix
+    maxAge: parseInt(configs.app.session.maxAge), 
+  },
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')))
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
-app.use('/', productsRouter)
-app.use('/', inventoryRoute)
-app.use('/', settingsRoute)
-app.use('/', loginRoute)
-app.use('/', sessionRoute)
+app.use('/', productsRouter);
+app.use('/', inventoryRoute);
+app.use('/', settingsRoute);
+app.use('/', loginRoute);
+app.use('/', sessionRoute);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

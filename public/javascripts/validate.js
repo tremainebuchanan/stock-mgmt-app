@@ -44,18 +44,6 @@ const toggleModal = () => {
   }
 };
 
-const remove = (event, id, title) => {
-  toggleModal();
-  document.getElementById('productId').value = id;
-  event.preventDefault();
-};
-
-const removeUser = (event, id) => {
-  toggleModal();
-  document.getElementById('userId').value = id;
-  event.preventDefault();
-};
-
 const showModal = (event, id, title) => {
   toggleModal();
   document.getElementById(`${title}Id`).value = id;
@@ -70,18 +58,6 @@ const removeResource = (title) => {
   fetch(`/${title}s/${resourceId}`, method)
     .then((response) => response.json())
     .then((data) => {
-      window.location.href = `/${title}s?success=${data.success}`;
-    }).catch((err) => console.log(err));
-};
-
-const deleteProduct = () => {
-  const productId = document.getElementById('productId').value;
-  const method = {
-    method: 'DELETE',
-  };
-  fetch(`/products/${productId}`, method)
-    .then((response) => response.json())
-    .then((data) => {
-      window.location.href = `/products?success=${data.success}`;
+      window.location.href = `/${title}s`;
     }).catch((err) => console.log(err));
 };

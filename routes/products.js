@@ -17,6 +17,7 @@ router.get('/products', redirectLogin, extractUser, async (req, res) => {
     products,
     view,
     markup: productService.getMarkup(),
+    resource: 'product',
     user: res.locals.user,
   };
   res.render('products', { viewData });
