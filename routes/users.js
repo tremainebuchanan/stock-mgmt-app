@@ -83,7 +83,7 @@ router.post('/users/authenticate', (req, res) => {
         res.user = user;
         res.locals.user = user;
         sessionService.create(req.sessionID, user._id);
-        return res.redirect('/');
+        return res.redirect('/dashboard');
       });
     }
   });

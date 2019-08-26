@@ -2,9 +2,9 @@ const { User } = require('../models/user');
 const sessionService = require('../services/session');
 
 module.exports = {
-    sessionChecker : (req, res, next) => {
+    sessionChecker : (req, res, next) =>{
         if (req.session.user && req.cookies._stock) {
-            res.redirect('/');
+            res.redirect('/dashboard');
         } else {
             next();
         }
@@ -18,7 +18,7 @@ module.exports = {
   },
   redirectHome: (req, res, next) => {
     if (!req.session) res.redirect('/login');
-    if (req.session.user) res.redirect('/');
+    if (req.session.user) res.redirect('/dashboard');
     else next();
   },
     extractUser: async (req, res, next) => {
