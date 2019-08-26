@@ -16,10 +16,11 @@ module.exports = {
       res.redirect('/login');
     } else next();
   },
-    redirectHome: (req, res, next)=>{
-        if(req.session.user) res.redirect('/')
-        else next()
-    },
+  redirectHome: (req, res, next) => {
+    if (!req.session) res.redirect('/login');
+    if (req.session.user) res.redirect('/');
+    else next();
+  },
     extractUser: async (req, res, next) => {
         if(req.session && req.session.user){
             const { user } = req.session
