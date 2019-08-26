@@ -9,13 +9,13 @@ module.exports = {
             next();
         }
     },
-    redirectLogin: (req, res, next)=>{
-        if(!req.session.user){
-            res.clearCookie('_stock')
-            res.redirect('/login')
-        } 
-        else next()
-    },
+  redirectLogin: (req, res, next) => {
+    if (!req.session) res.redirect('/login');
+    if (!req.session.user) {
+      res.clearCookie('_stock');
+      res.redirect('/login');
+    } else next();
+  },
     redirectHome: (req, res, next)=>{
         if(req.session.user) res.redirect('/')
         else next()
