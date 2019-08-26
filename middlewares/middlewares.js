@@ -4,21 +4,21 @@ const sessionService = require('../services/session');
 module.exports = {
     sessionChecker : (req, res, next) =>{
         if (req.session.user && req.cookies._stock) {
-            res.redirect('/dashboard');
+            res.redirect('/');
         } else {
             next();
         }
     },
   redirectLogin: (req, res, next) => {
-    if (!req.session) res.redirect('/login');
+    // if (!req.session) res.redirect('/login');
     if (!req.session.user) {
       res.clearCookie('_stock');
       res.redirect('/login');
     } else next();
   },
   redirectHome: (req, res, next) => {
-    if (!req.session) res.redirect('/login');
-    if (req.session.user) res.redirect('/dashboard');
+    // if (!req.session) res.redirect('/login');
+    if (req.session.user) res.redirect('/');
     else next();
   },
     extractUser: async (req, res, next) => {

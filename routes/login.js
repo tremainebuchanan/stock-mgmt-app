@@ -4,7 +4,7 @@ const User = require('../models/db').User
 const sessionChecker = require('../middlewares/middlewares').sessionChecker
 const redirectHome = require('../middlewares/middlewares').redirectHome
 
-router.get('/login', function (req, res, next) {
+router.get('/login', redirectHome, function (req, res, next) {
     res.render('login/index', { title: 'Login' });
 });
 
