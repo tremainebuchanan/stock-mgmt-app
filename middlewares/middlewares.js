@@ -1,8 +1,8 @@
 const { User } = require('../models/user');
-const sessionService = require('../services/session')
+const sessionService = require('../services/session');
 
 module.exports = {
-    sessionChecker : (req, res, next)=>{
+    sessionChecker : (req, res, next) => {
         if (req.session.user && req.cookies._stock) {
             res.redirect('/');
         } else {
