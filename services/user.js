@@ -7,7 +7,12 @@ module.exports = {
   create: async (user) => {
     // eslint-disable-next-line no-param-reassign
     user.password = generator.generate({ length: 20 });
-    eventEmitter.emit('user-signup', { to: user.email, password: user.password });
+    eventEmitter.emit('user-signup', {
+      name: `${user.firstName} ${user.lastName}`,
+      password: user.password,
+      to: user.email,
+      username: user.email,
+    });
     new User(user).save();
   },
   index: async () => User
